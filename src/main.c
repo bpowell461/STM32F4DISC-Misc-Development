@@ -8,7 +8,7 @@ void delay()
 {
     //Busy Loop
     int i;
-    for (i = 0; i < 5000000; i++);
+    for (i = 0; i < 500000; i++);
 }
  int main(void)
 {
@@ -23,10 +23,18 @@ void delay()
     GPIO_Button_Handle.GPIO_PinConfig.GPIO_PinSpeed        = GPIO_SPEED_FAST;
     GPIO_Button_Handle.GPIO_PinConfig.GPIO_PinPuPdControl  = GPIO_NO_PUPD;
 
+    GPIO_Led_Handle.GPIO_PinConfig.GPIO_PinNumber       = 12;
+    GPIO_Led_Handle.GPIO_PinConfig.GPIO_PinMode         = GPIO_MODE_OUT;
+    GPIO_Led_Handle.GPIO_PinConfig.GPIO_PinSpeed        = GPIO_SPEED_FAST;
+    GPIO_Led_Handle.GPIO_PinConfig.GPIO_PinOPType       = GPIO_OP_TYPE_PP;
+    GPIO_Led_Handle.GPIO_PinConfig.GPIO_PinPuPdControl  = GPIO_NO_PUPD;
+
     GPIO_PCLK_Control(GPIOA, ENABLE);
     GPIO_PCLK_Control(GPIOD, ENABLE);
 
     GPIO_Init(&GPIO_Led_Handle);
+
+    GPIO_Init(&GPIO_Button_Handle);
 
     while(1)
     {
