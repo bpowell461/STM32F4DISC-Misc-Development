@@ -4,6 +4,16 @@
 
 #include "../bsp/STM32_F4xx_HAL_Drivers/inc/stm32fxx_drivers.h"
 
+#define LOW     0
+#define HIGH    1
+
+#ifdef ARDUINO
+    #define BUTTON_PRESSED  HIGH
+#else
+    #define BUTTON_PRESSED  LOW
+#endif
+
+
 void delay()
 {
     //Busy Loop
@@ -38,7 +48,7 @@ int main(void)
 
     while(1)
     {
-        if(GPIO_ReadInput(&GPIO_Button_Handle) == 1)
+        if(GPIO_ReadInput(&GPIO_Button_Handle) == BUTTON_PRESSED)
         {
             for(int i = 0; i < 2; i++)
             {
