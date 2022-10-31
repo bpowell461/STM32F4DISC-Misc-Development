@@ -86,11 +86,15 @@ uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number);
 
 uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx);
 
+uint8_t GPIO_ReadInput(GPIO_Handle_t *pGPIO_Handle);
+
 void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t state);
 
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number, uint8_t state);
 
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number);
+
+void GPIO_ToggleOutput(GPIO_Handle_t *pGPIO_Handle);
 
 void GPIO_IRQConfig(uint8_t IRQ_Number, uint8_t IRQ_Priority, uint8_t state);
 

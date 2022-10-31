@@ -210,7 +210,10 @@ uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx)
 
     return value;
 }
-
+uint8_t GPIO_ReadInput(GPIO_Handle_t *pGPIO_Handle)
+{
+    return (uint8_t) ((pGPIO_Handle->pGPIOx->IDReg.value >> pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) & 0x00000001);
+}
 void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t state)
 {
     pGPIOx->ODReg.value = state;
@@ -231,6 +234,11 @@ void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number, uint8_t st
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number)
 {
     pGPIOx->ODReg.value ^= (SET << pin_number);
+}
+
+void GPIO_ToggleOutput(GPIO_Handle_t *pGPIO_Handle)
+{
+    pGPIO_Handle->pGPIOx->ODReg.value ^= (SET << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber);
 }
 
 void GPIO_IRQConfig(uint8_t IRQ_Number, uint8_t IRQ_Priority, uint8_t state);

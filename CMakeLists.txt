@@ -12,7 +12,7 @@ set(SIZE arm-none-eabi-size)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 # project settings
-project(STM32F4DISC_Misc_Development C)
+project(STM32F4DISC_Misc_Development C ASM)
 set(CMAKE_C_STANDARD 99)
 
 set(MCPU cortex-m4)
@@ -28,9 +28,11 @@ set(MCPU cortex-m4)
 add_compile_options(-mcpu=${MCPU} -mthumb -mthumb-interwork)
 add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-length=0)
 
-include_directories(bsp)
+include_directories(bsp/STM32_F4xx_HAL_Drivers/inc)
 set(SOURCES
         "src/main.c"
+        "bsp/STM32_F4xx_HAL_Drivers/startup/startup_stm32f407vgtx.s"
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_gpio_drivers.c"
         )
 
 set(LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/STM32F407VGTX_FLASH.ld)
@@ -39,13 +41,13 @@ add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR
 add_link_options(-mcpu=${MCPU} -mthumb -mthumb-interwork)
 add_link_options(-T ${LINKER_SCRIPT})
 
-add_executable(${PROJECT_NAME}.out ${SOURCES})
+add_executable(${PROJECT_NAME}.elf ${SOURCES})
 
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
 
-add_custom_command(TARGET ${PROJECT_NAME}.out POST_BUILD
-        COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${PROJECT_NAME}.out> ${HEX_FILE}
-        COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${PROJECT_NAME}.out> ${BIN_FILE}
+add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
+        COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${PROJECT_NAME}.elf> ${HEX_FILE}
+        COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${PROJECT_NAME}.elf> ${BIN_FILE}
         COMMENT "Building ${HEX_FILE}
                  Building ${BIN_FILE}")
