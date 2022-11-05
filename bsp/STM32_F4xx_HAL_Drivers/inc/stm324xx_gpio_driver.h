@@ -96,9 +96,11 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number);
 
 void GPIO_ToggleOutput(GPIO_Handle_t *pGPIO_Handle);
 
-void GPIO_IRQConfig(uint8_t IRQ_Number, uint8_t IRQ_Priority, uint8_t state);
+void GPIO_IRQ_Interrupt_Config(uint8_t IRQ_Number, uint8_t state);
 
 void GPIO_IRQHandling(uint8_t pin_number);
+
+void GPIO_IRQ_Priority_Config(uint8_t IRQ_Number, uint32_t IRQ_Priority);
 
 
 #endif //STM324XX_GPIO_DRIVER_H
