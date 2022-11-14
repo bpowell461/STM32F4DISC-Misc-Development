@@ -6,7 +6,7 @@
  */
 
 /**
- * @Function GPIO_Init()
+ * @Function GPIO_Init
  *
  * @brief
  *
@@ -24,8 +24,8 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
     if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
     {
         // Non-Interrupt Mode
-        pGPIOHandle->pGPIOx->ModeReg.value &= ~(0x3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
-        pGPIOHandle->pGPIOx->ModeReg.value |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) );
+        pGPIOHandle->pGPIOx->ModeReg &= ~(0x3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+        pGPIOHandle->pGPIOx->ModeReg |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) );
     }
     else
     {
@@ -71,16 +71,16 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
     }
 
     // Configure Speed
-    pGPIOHandle->pGPIOx->OSpeedReg.value &= ~(0x3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
-    pGPIOHandle->pGPIOx->OSpeedReg.value |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) );
+    pGPIOHandle->pGPIOx->OSpeedReg &= ~(0x3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+    pGPIOHandle->pGPIOx->OSpeedReg |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinSpeed << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) );
 
     // Configure PuPd
-    pGPIOHandle->pGPIOx->PuPdReg.value &= ~(0x3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
-    pGPIOHandle->pGPIOx->PuPdReg.value |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) );
+    pGPIOHandle->pGPIOx->PuPdReg &= ~(0x3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+    pGPIOHandle->pGPIOx->PuPdReg |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinPuPdControl << (2 * pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) );
 
     // Configure Output Type
-    pGPIOHandle->pGPIOx->OTypeReg.value &= ~(0x3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
-    pGPIOHandle->pGPIOx->OTypeReg.value |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType << (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) );
+    pGPIOHandle->pGPIOx->OTypeReg &= ~(0x3 << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+    pGPIOHandle->pGPIOx->OTypeReg |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinOPType << (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber) );
 
     // Configure Alternate Functionality
     if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ALTFUNC)
@@ -91,13 +91,13 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
         //Determining starting bit position in register
         uint32_t shift_amount = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 8;
 
-        pGPIOHandle->pGPIOx->AFReg[index].value &= ~(0xF << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
-        pGPIOHandle->pGPIOx->AFReg[index].value |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode << (4 * shift_amount) );
+        pGPIOHandle->pGPIOx->AFReg[index] &= ~(0xF << pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber);
+        pGPIOHandle->pGPIOx->AFReg[index] |= (pGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode << (4 * shift_amount) );
     }
 }
 
 /**
- * @Function GPIO_DeInit()
+ * @Function GPIO_DeInit
  *
  * @brief
  *
@@ -107,7 +107,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
  *
  * @Note De-initializes the GPIO port
  *
- **/
+ */
 void GPIO_DeInit(GPIO_RegDef_t *pGPIOx)
 {
     if(pGPIOx == GPIOA)
@@ -148,6 +148,18 @@ void GPIO_DeInit(GPIO_RegDef_t *pGPIOx)
     }
 }
 
+/**
+ * @Function GPIO_PCLK_Control
+ *
+ * @brief
+ *
+ * @param[in] GPIO_RegDef_t *pGPIOx
+ *
+ * @return None
+ *
+ * @Note Enables the GPIO Peripheral Clock
+ *
+ */
 void GPIO_PCLK_Control(GPIO_RegDef_t *pGPIOx, uint8_t state)
 {
     if (state == ENABLE)
@@ -230,52 +242,92 @@ void GPIO_PCLK_Control(GPIO_RegDef_t *pGPIOx, uint8_t state)
     }
 }
 
+/**
+ * @Function GPIO_ReadFromInputPin
+ *
+ * @brief
+ *
+ * @param[in] GPIO_RegDef_t *pGPIOx
+ * @param[in] uint8_t pin_number
+ *
+ * @return None
+ *
+ * @Note Reads 8-bits from a GPIO Pin
+ *
+ */
 uint8_t GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number)
 {
     uint8_t value;
 
-    value = (uint8_t) ((pGPIOx->IDReg.value >> pin_number) & 0x00000001);
+    value = (uint8_t) ((pGPIOx->IDReg >> pin_number) & 0x00000001);
 
     return value;
 }
 
+/**
+ * @Function GPIO_ReadFromInputPort
+ *
+ * @brief
+ *
+ * @param[in] GPIO_RegDef_t *pGPIOx
+ *
+ * @return None
+ *
+ * @Note Reads 16-bits from GPIO Port
+ *
+ */
 uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx)
 {
     uint16_t value;
 
-    value = (uint16_t) pGPIOx->IDReg.value;
+    value = (uint16_t) pGPIOx->IDReg;
 
     return value;
 }
+
+/**
+ * @Function GPIO_ReadInput
+ *
+ * @brief
+ *
+ * @param[in] GPIO_Handle_t *pGPIOx
+ *
+ * @return None
+ *
+ * @Note Reads from GPIO Pin based on handle configuration
+ *
+ */
 uint8_t GPIO_ReadInput(GPIO_Handle_t *pGPIO_Handle)
 {
-    return (uint8_t) ((pGPIO_Handle->pGPIOx->IDReg.value >> pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) & 0x00000001);
+    return (uint8_t) ((pGPIO_Handle->pGPIOx->IDReg >> pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber) & 0x00000001);
 }
+
+
 void GPIO_WriteToOutputPort(GPIO_RegDef_t *pGPIOx, uint16_t state)
 {
-    pGPIOx->ODReg.value = state;
+    pGPIOx->ODReg = state;
 }
 
 void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number, uint8_t state)
 {
     if (state == SET)
     {
-        pGPIOx->ODReg.value |= (SET << pin_number);
+        pGPIOx->ODReg |= (SET << pin_number);
     }
     else
     {
-        pGPIOx->ODReg.value &= ~(SET << pin_number);
+        pGPIOx->ODReg &= ~(SET << pin_number);
     }
 }
 
 void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t pin_number)
 {
-    pGPIOx->ODReg.value ^= (SET << pin_number);
+    pGPIOx->ODReg ^= (SET << pin_number);
 }
 
 void GPIO_ToggleOutput(GPIO_Handle_t *pGPIO_Handle)
 {
-    pGPIO_Handle->pGPIOx->ODReg.value ^= (SET << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber);
+    pGPIO_Handle->pGPIOx->ODReg ^= (SET << pGPIO_Handle->GPIO_PinConfig.GPIO_PinNumber);
 }
 
 void GPIO_IRQ_Interrupt_Config(uint8_t IRQ_Number, uint8_t state)

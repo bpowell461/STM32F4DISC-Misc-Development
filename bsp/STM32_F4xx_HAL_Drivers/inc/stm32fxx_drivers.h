@@ -211,6 +211,183 @@
 #define SET ENABLE
 #define RESET DISABLE
 
+/******************************************************************************************
+ *Bit position definitions of SPI peripheral
+ ******************************************************************************************/
+/*
+ * Bit position definitions SPI_CR1
+ */
+#define SPI_CR1_CPHA     				 0
+#define SPI_CR1_CPOL      				 1
+#define SPI_CR1_MSTR     				 2
+#define SPI_CR1_BR   					 3
+#define SPI_CR1_SPE     				 6
+#define SPI_CR1_LSBFIRST   			 	 7
+#define SPI_CR1_SSI     				 8
+#define SPI_CR1_SSM      				 9
+#define SPI_CR1_RXONLY      		 	10
+#define SPI_CR1_DFF     			 	11
+#define SPI_CR1_CRCNEXT   			 	12
+#define SPI_CR1_CRCEN   			 	13
+#define SPI_CR1_BIDIOE     			 	14
+#define SPI_CR1_BIDIMODE      			15
+
+/*
+ * Bit position definitions SPI_CR2
+ */
+#define SPI_CR2_RXDMAEN		 			0
+#define SPI_CR2_TXDMAEN				 	1
+#define SPI_CR2_SSOE				 	2
+#define SPI_CR2_FRF						4
+#define SPI_CR2_ERRIE					5
+#define SPI_CR2_RXNEIE				 	6
+#define SPI_CR2_TXEIE					7
+
+
+/*
+ * Bit position definitions SPI_SR
+ */
+#define SPI_SR_RXNE						0
+#define SPI_SR_TXE				 		1
+#define SPI_SR_CHSIDE				 	2
+#define SPI_SR_UDR					 	3
+#define SPI_SR_CRCERR				 	4
+#define SPI_SR_MODF					 	5
+#define SPI_SR_OVR					 	6
+#define SPI_SR_BSY					 	7
+#define SPI_SR_FRE					 	8
+
+/******************************************************************************************
+ *Bit position definitions of I2C peripheral
+ ******************************************************************************************/
+/*
+ * Bit position definitions I2C_CR1
+ */
+#define I2C_CR1_PE						0
+#define I2C_CR1_NOSTRETCH  				7
+#define I2C_CR1_START 					8
+#define I2C_CR1_STOP  				 	9
+#define I2C_CR1_ACK 				 	10
+#define I2C_CR1_SWRST  				 	15
+
+/*
+ * Bit position definitions I2C_CR2
+ */
+#define I2C_CR2_FREQ				 	0
+#define I2C_CR2_ITERREN				 	8
+#define I2C_CR2_ITEVTEN				 	9
+#define I2C_CR2_ITBUFEN 			    10
+
+/*
+ * Bit position definitions I2C_OAR1
+ */
+#define I2C_OAR1_ADD0    				 0
+#define I2C_OAR1_ADD71 				 	 1
+#define I2C_OAR1_ADD98  			 	 8
+#define I2C_OAR1_ADDMODE   			 	15
+
+/*
+ * Bit position definitions I2C_SR1
+ */
+
+#define I2C_SR1_SB 					 	0
+#define I2C_SR1_ADDR 				 	1
+#define I2C_SR1_BTF 					2
+#define I2C_SR1_ADD10 					3
+#define I2C_SR1_STOPF 					4
+#define I2C_SR1_RXNE 					6
+#define I2C_SR1_TXE 					7
+#define I2C_SR1_BERR 					8
+#define I2C_SR1_ARLO 					9
+#define I2C_SR1_AF 					 	10
+#define I2C_SR1_OVR 					11
+#define I2C_SR1_TIMEOUT 				14
+
+/*
+ * Bit position definitions I2C_SR2
+ */
+#define I2C_SR2_MSL						0
+#define I2C_SR2_BUSY 					1
+#define I2C_SR2_TRA 					2
+#define I2C_SR2_GENCALL 				4
+#define I2C_SR2_DUALF 					7
+
+/*
+ * Bit position definitions I2C_CCR
+ */
+#define I2C_CCR_CCR 					 0
+#define I2C_CCR_DUTY 					14
+#define I2C_CCR_FS  				 	15
+
+/******************************************************************************************
+ *Bit position definitions of USART peripheral
+ ******************************************************************************************/
+
+/*
+ * Bit position definitions USART_CR1
+ */
+#define USART_CR1_SBK					0
+#define USART_CR1_RWU 					1
+#define USART_CR1_RE  					2
+#define USART_CR1_TE 					3
+#define USART_CR1_IDLEIE 				4
+#define USART_CR1_RXNEIE  				5
+#define USART_CR1_TCIE					6
+#define USART_CR1_TXEIE					7
+#define USART_CR1_PEIE 					8
+#define USART_CR1_PS 					9
+#define USART_CR1_PCE 					10
+#define USART_CR1_WAKE  				11
+#define USART_CR1_M 					12
+#define USART_CR1_UE 					13
+#define USART_CR1_OVER8  				15
+
+
+
+/*
+ * Bit position definitions USART_CR2
+ */
+#define USART_CR2_ADD   				0
+#define USART_CR2_LBDL   				5
+#define USART_CR2_LBDIE  				6
+#define USART_CR2_LBCL   				8
+#define USART_CR2_CPHA   				9
+#define USART_CR2_CPOL   				10
+#define USART_CR2_STOP   				12
+#define USART_CR2_LINEN   				14
+
+
+/*
+ * Bit position definitions USART_CR3
+ */
+#define USART_CR3_EIE   				0
+#define USART_CR3_IREN   				1
+#define USART_CR3_IRLP  				2
+#define USART_CR3_HDSEL   				3
+#define USART_CR3_NACK   				4
+#define USART_CR3_SCEN   				5
+#define USART_CR3_DMAR  				6
+#define USART_CR3_DMAT   				7
+#define USART_CR3_RTSE   				8
+#define USART_CR3_CTSE   				9
+#define USART_CR3_CTSIE   				10
+#define USART_CR3_ONEBIT   				11
+
+/*
+ * Bit position definitions USART_SR
+ */
+
+#define USART_SR_PE        				0
+#define USART_SR_FE        				1
+#define USART_SR_NE        				2
+#define USART_SR_ORE       				3
+#define USART_SR_IDLE       			4
+#define USART_SR_RXNE        			5
+#define USART_SR_TC        				6
+#define USART_SR_TXE        			7
+#define USART_SR_LBD        			8
+#define USART_SR_CTS        			9
+
 /*
  * RCC Macros
  */
@@ -225,297 +402,25 @@
 #define GPIOH_REG_RESET     do{ (RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &= ~(1 << 7)); }while(0)
 #define GPIOI_REG_RESET     do{ (RCC->AHB1RSTR |= (1 << 8)); (RCC->AHB1RSTR &= ~(1 << 8)); }while(0)
 
+#define SPI1_REG_RESET      do{ (RCC->APB2RSTR |= (1 << 12)); (RCC->APB2RSTR &= ~(1 << 12)); }while(0)
+#define SPI2_REG_RESET      do{ (RCC->APB1RSTR |= (1 << 14)); (RCC->APB1RSTR &= ~(1 << 14)); }while(0)
+#define SPI3_REG_RESET      do{ (RCC->APB1RSTR |= (1 << 15)); (RCC->APB1RSTR &= ~(1 << 15)); }while(0)
+
 /*
  * Register Structs and Unions
  */
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t ModeR0    : 2;
-        uint32_t ModeR1    : 2;
-        uint32_t ModeR2    : 2;
-        uint32_t ModeR3    : 2;
-        uint32_t ModeR4    : 2;
-        uint32_t ModeR5    : 2;
-        uint32_t ModeR6    : 2;
-        uint32_t ModeR7    : 2;
-        uint32_t ModeR8    : 2;
-        uint32_t ModeR9    : 2;
-        uint32_t ModeR10   : 2;
-        uint32_t ModeR11   : 2;
-        uint32_t ModeR12   : 2;
-        uint32_t ModeR13   : 2;
-        uint32_t ModeR14   : 2;
-        uint32_t ModeR15   : 2;
-    };
-} GPIO_ModeReg_t;
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t OT0        : 1;
-        uint32_t OT1        : 1;
-        uint32_t OT2        : 1;
-        uint32_t OT3        : 1;
-        uint32_t OT4        : 1;
-        uint32_t OT5        : 1;
-        uint32_t OT6        : 1;
-        uint32_t OT7        : 1;
-        uint32_t OT8        : 1;
-        uint32_t OT9        : 1;
-        uint32_t OT10       : 1;
-        uint32_t OT11       : 1;
-        uint32_t OT12       : 1;
-        uint32_t OT13       : 1;
-        uint32_t OT14       : 1;
-        uint32_t OT15       : 1;
-        uint32_t Reserved   : 16;
-    };
-}GPIO_OTypeReg_t;
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t OSpeedR0    : 2;
-        uint32_t OSpeedR1    : 2;
-        uint32_t OSpeedR2    : 2;
-        uint32_t OSpeedR3    : 2;
-        uint32_t OSpeedR4    : 2;
-        uint32_t OSpeedR5    : 2;
-        uint32_t OSpeedR6    : 2;
-        uint32_t OSpeedR7    : 2;
-        uint32_t OSpeedR8    : 2;
-        uint32_t OSpeedR9    : 2;
-        uint32_t OSpeedR10   : 2;
-        uint32_t OSpeedR11   : 2;
-        uint32_t OSpeedR12   : 2;
-        uint32_t OSpeedR13   : 2;
-        uint32_t OSpeedR14   : 2;
-        uint32_t OSpeedR15   : 2;
-    };
-}GPIO_OSpeedReg_t;
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t PuPdR0    : 2;
-        uint32_t PuPdR1    : 2;
-        uint32_t PuPdR2    : 2;
-        uint32_t PuPdR3    : 2;
-        uint32_t PuPdR4    : 2;
-        uint32_t PuPdR5    : 2;
-        uint32_t PuPdR6    : 2;
-        uint32_t PuPdR7    : 2;
-        uint32_t PuPdR8    : 2;
-        uint32_t PuPdR9    : 2;
-        uint32_t PuPdR10   : 2;
-        uint32_t PuPdR11   : 2;
-        uint32_t PuPdR12   : 2;
-        uint32_t PuPdR13   : 2;
-        uint32_t PuPdR14   : 2;
-        uint32_t PuPdR15   : 2;
-    };
-}GPIO_PuPdReg_t;
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t IDR0        : 1;
-        uint32_t IDR1        : 1;
-        uint32_t IDR2        : 1;
-        uint32_t IDR3        : 1;
-        uint32_t IDR4        : 1;
-        uint32_t IDR5        : 1;
-        uint32_t IDR6        : 1;
-        uint32_t IDR7        : 1;
-        uint32_t IDR8        : 1;
-        uint32_t IDR9        : 1;
-        uint32_t IDR10       : 1;
-        uint32_t IDR11       : 1;
-        uint32_t IDR12       : 1;
-        uint32_t IDR13       : 1;
-        uint32_t IDR14       : 1;
-        uint32_t IDR15       : 1;
-        uint32_t Reserved   : 16;
-    };
-}GPIO_IDReg_t;
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t ODR0        : 1;
-        uint32_t ODR1        : 1;
-        uint32_t ODR2        : 1;
-        uint32_t ODR3        : 1;
-        uint32_t ODR4        : 1;
-        uint32_t ODR5        : 1;
-        uint32_t ODR6        : 1;
-        uint32_t ODR7        : 1;
-        uint32_t ODR8        : 1;
-        uint32_t ODR9        : 1;
-        uint32_t ODR10       : 1;
-        uint32_t ODR11       : 1;
-        uint32_t ODR12       : 1;
-        uint32_t ODR13       : 1;
-        uint32_t ODR14       : 1;
-        uint32_t ODR15       : 1;
-        uint32_t Reserved   : 16;
-    };
-}GPIO_ODReg_t;
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t BS0        : 1;
-        uint32_t BS1        : 1;
-        uint32_t BS2        : 1;
-        uint32_t BS3        : 1;
-        uint32_t BS4        : 1;
-        uint32_t BS5        : 1;
-        uint32_t BS6        : 1;
-        uint32_t BS7        : 1;
-        uint32_t BS8        : 1;
-        uint32_t BS9        : 1;
-        uint32_t BS10       : 1;
-        uint32_t BS11       : 1;
-        uint32_t BS12       : 1;
-        uint32_t BS13       : 1;
-        uint32_t BS14       : 1;
-        uint32_t BS15       : 1;
-        uint32_t BR0        : 1;
-        uint32_t BR1        : 1;
-        uint32_t BR2        : 1;
-        uint32_t BR3        : 1;
-        uint32_t BR4        : 1;
-        uint32_t BR5        : 1;
-        uint32_t BR6        : 1;
-        uint32_t BR7        : 1;
-        uint32_t BR8        : 1;
-        uint32_t BR9        : 1;
-        uint32_t BR10       : 1;
-        uint32_t BR11       : 1;
-        uint32_t BR12       : 1;
-        uint32_t BR13       : 1;
-        uint32_t BR14       : 1;
-        uint32_t BR15       : 1;
-    };
-}GPIO_BSRReg_t;
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t LCK0        : 1;
-        uint32_t LCK1        : 1;
-        uint32_t LCK2        : 1;
-        uint32_t LCK3        : 1;
-        uint32_t LCK4        : 1;
-        uint32_t LCK5        : 1;
-        uint32_t LCK6        : 1;
-        uint32_t LCK7        : 1;
-        uint32_t LCK8        : 1;
-        uint32_t LCK9        : 1;
-        uint32_t LCK10       : 1;
-        uint32_t LCK11       : 1;
-        uint32_t LCK12       : 1;
-        uint32_t LCK13       : 1;
-        uint32_t LCK14       : 1;
-        uint32_t LCK15       : 1;
-        uint32_t LCK16       : 1;
-        uint32_t Reserved   : 15;
-    };
-}GPIO_CFLReg_t;
-
-typedef union {
-    uint32_t value;
-    struct {
-        uint32_t AFR0        : 4;
-        uint32_t AFR1        : 4;
-        uint32_t AFR2        : 4;
-        uint32_t AFR3        : 4;
-        uint32_t AFR4        : 4;
-        uint32_t AFR5        : 4;
-        uint32_t AFR6        : 4;
-        uint32_t AFR7        : 4;
-    };
-}GPIO_AFReg_t;
-
 typedef struct
 {
-    volatile GPIO_ModeReg_t     ModeReg;
-    volatile GPIO_OTypeReg_t    OTypeReg;
-    volatile GPIO_OSpeedReg_t   OSpeedReg;
-    volatile GPIO_PuPdReg_t     PuPdReg;
-    volatile GPIO_IDReg_t       IDReg;
-    volatile GPIO_ODReg_t       ODReg;
-    volatile GPIO_BSRReg_t      BSRReg;
-    volatile GPIO_CFLReg_t      CFLReg;
-    volatile GPIO_AFReg_t       AFReg[2];
+    volatile uint32_t   ModeReg;
+    volatile uint32_t   OTypeReg;
+    volatile uint32_t   OSpeedReg;
+    volatile uint32_t   PuPdReg;
+    volatile uint32_t   IDReg;
+    volatile uint32_t   ODReg;
+    volatile uint32_t   BSRReg;
+    volatile uint32_t   CFLReg;
+    volatile uint32_t   AFReg[2];
 } GPIO_RegDef_t;
-
-typedef union {
-    struct {
-        uint32_t HSION          : 1;
-        uint32_t HSIRDY         : 1;
-        uint32_t HSITRIM0       : 1;
-        uint32_t HSITRIM1       : 1;
-        uint32_t HSITRIM2       : 1;
-        uint32_t HSITRIM3       : 1;
-        uint32_t HSITRIM4       : 1;
-        uint32_t HSICAL0        : 1;
-        uint32_t HSICAL1        : 1;
-        uint32_t HSICAL2        : 1;
-        uint32_t HSICAL3        : 1;
-        uint32_t HSICAL4        : 1;
-        uint32_t HSICAL5        : 1;
-        uint32_t HSICAL6        : 1;
-        uint32_t HSICAL7        : 1;
-        uint32_t HSEON          : 1;
-        uint32_t HSERDY         : 1;
-        uint32_t HSEBYP         : 1;
-        uint32_t CSSON          : 1;
-        uint32_t Reserved1      : 4;
-        uint32_t PLL_ON         : 1;
-        uint32_t PLL_RDY        : 1;
-        uint32_t PLL_I2SON      : 1;
-        uint32_t PLL_I2SRDY     : 1;
-        uint32_t Reserved2      : 4;
-    };
-}RCC_CReg_t;
-
-typedef union {
-	uint32_t value;
-	struct {
-		uint32_t GPIOAEN 		: 1;
-		uint32_t GPIOBEN 		: 1;
-		uint32_t GPIOCEN 		: 1;
-		uint32_t GPIODEN 		: 1;
-		uint32_t GPIOEEN 		: 1;
-		uint32_t GPIOFEN 		: 1;
-		uint32_t GPIOGEN 		: 1;
-		uint32_t GPIOHEN 		: 1;
-		uint32_t GPIOIEN 		: 1;
-		uint32_t GPIOJEN 		: 1;
-		uint32_t GPIOKEN 		: 1;
-		uint32_t Reserved1 		: 3;
-		uint32_t CRCEN			: 1;
-		uint32_t Reserved2		: 5;
-		uint32_t BKPSRAMEN		: 1;
-		uint32_t Reserved3  	: 1;
-		uint32_t CCMDATARAMEN	: 1;
-		uint32_t DMA1EN			: 1;
-		uint32_t DMA2EN			: 1;
-		uint32_t DMA2DEN		: 1;
-		uint32_t Reserved4		: 2;
-		uint32_t ETHMACEN		: 1;
-		uint32_t ETHMACTXEN		: 1;
-		uint32_t ETHMACRXEN		: 1;
-		uint32_t ETHMACPTPEN	: 1;
-		uint32_t OTGHSEN		: 1;
-		uint32_t OTGHSULPIEN	: 1;
-		uint32_t Reserved5		: 1;
-	};
-}RCC_AHB1_PClock_Reg_t;
 
 typedef struct
 {
@@ -575,6 +480,19 @@ typedef struct
     volatile uint32_t RESERVED2[2];
     volatile uint32_t CFGR;
 } SYSCFG_RegDef_t;
+
+typedef struct
+{
+    volatile uint32_t SPI_CR1;
+    volatile uint32_t SPI_CR2;
+    volatile uint32_t SPI_SR;
+    volatile uint32_t SPI_DR;
+    volatile uint32_t SPI_CRCPR;
+    volatile uint32_t SPI_RXCRCR;
+    volatile uint32_t SPI_TXCRCR;
+    volatile uint32_t SPI_I2SCFGR;
+    volatile uint32_t SPI_I2SPR;
+}SPI_RegDef_t;
 
 /*
  * Function

@@ -33,7 +33,8 @@ set(SOURCES
         "src/main.c"
         "bsp/STM32_F4xx_HAL_Drivers/startup/startup_stm32f407vgtx.s"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_gpio_drivers.c"
-        bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_drivers.c)
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_drivers.c"
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_spi_drivers.c")
 
 set(LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/STM32F407VGTX_FLASH.ld)
 
