@@ -30,7 +30,7 @@ add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-le
 
 include_directories(bsp/STM32_F4xx_HAL_Drivers/inc)
 set(SOURCES
-        "src/main.c"
+        "src/SPI_Example/main.c"
         "bsp/STM32_F4xx_HAL_Drivers/startup/startup_stm32f407vgtx.s"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_gpio_drivers.c"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_drivers.c"

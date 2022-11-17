@@ -2,18 +2,14 @@
 // Created by Brad on 10/19/2022.
 //
 
-#include "../bsp/STM32_F4xx_HAL_Drivers/inc/stm32fxx_drivers.h"
-#include "../bsp/STM32_F4xx_HAL_Drivers/inc/stm324xx_gpio_driver.h"
+#include "../../bsp/STM32_F4xx_HAL_Drivers/inc/stm32fxx_drivers.h"
+#include "../../bsp/STM32_F4xx_HAL_Drivers/inc/stm324xx_gpio_driver.h"
 #include <string.h>
 
 #define LOW     0
 #define HIGH    1
 
-#ifdef ARDUINO
-    #define BUTTON_PRESSED  HIGH
-#else
-    #define BUTTON_PRESSED  LOW
-#endif
+#define BUTTON_PRESSED  LOW
 
 
 void delay()
@@ -37,7 +33,6 @@ int main(void)
     GPIO_Button_Handle.GPIO_PinConfig.GPIO_PinSpeed        = GPIO_SPEED_FAST;
     GPIO_Button_Handle.GPIO_PinConfig.GPIO_PinPuPdControl  = GPIO_PIN_PU;
 
-    GPIO_PCLK_Control(GPIOB, ENABLE);
     GPIO_Init(&GPIO_Button_Handle);
 
     // Button Interrupt Config
@@ -53,7 +48,6 @@ int main(void)
     GPIO_Led_Handle.GPIO_PinConfig.GPIO_PinOPType       = GPIO_OP_TYPE_PP;
     GPIO_Led_Handle.GPIO_PinConfig.GPIO_PinPuPdControl  = GPIO_NO_PUPD;
 
-    GPIO_PCLK_Control(GPIOA, ENABLE);
     GPIO_Init(&GPIO_Led_Handle);
 
     while(1);

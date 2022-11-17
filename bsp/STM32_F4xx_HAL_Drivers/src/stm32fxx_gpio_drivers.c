@@ -21,6 +21,10 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 {
     // Configure Mode
     uint32_t temp = 0;
+
+    //Enable Peripheral Clock
+    GPIO_PCLK_Control(pGPIOHandle->pGPIOx, ENABLE);
+
     if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG)
     {
         // Non-Interrupt Mode

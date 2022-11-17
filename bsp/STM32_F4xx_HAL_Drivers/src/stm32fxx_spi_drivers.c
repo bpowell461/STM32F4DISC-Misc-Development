@@ -46,6 +46,9 @@ uint32_t SPI_Init(SPI_Handle_t *pSPIHandle)
 {
     uint32_t tempReg = 0;
 
+    //Init SPI Peripheral Clock
+    SPI_PClKControl(pSPIHandle->pSPIx, ENABLE);
+
     // Configure device mode (2nd bit position)
     tempReg |= pSPIHandle->SPIConfig.SPI_DeviceMode << SPI_CR1_MSTR;
 
@@ -76,6 +79,8 @@ uint32_t SPI_Init(SPI_Handle_t *pSPIHandle)
     tempReg |= pSPIHandle->SPIConfig.SPI_CPHA << SPI_CR1_CPHA;
 
     pSPIHandle->pSPIx->SPI_CR1 = tempReg;
+
+
 }
 
 uint32_t SPI_DeInit(SPI_RegDef_t *pSPIx)
@@ -130,6 +135,29 @@ uint32_t SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t payload_
 
     // If TX Buffer has data then send was successful!
     return SPI_Get_Flag_Status(pSPIx, SPI_SR_TXE);
+}
+
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state)
+{
+    if(state == ENABLE)
+    {
+        pSPIx->SPI_CR1 |= (1 << SPI_CR1_SPE);
+    }
+    else
+    {
+        pSPIx->SPI_CR1 &= ~ (1 << SPI_CR1_SPE);
+    }
+}
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t state)
+{
+    if(state == ENABLE)
+    {
+        pSPIx->SPI_CR1 |= (1 << SPI_CR1_SSI);
+    }
+    else
+    {
+        pSPIx->SPI_CR1 &= ~ (1 << SPI_CR1_SSI);
+    }
 }
 uint32_t SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t payload_length)
 {

@@ -59,5 +59,9 @@ void SPI_IRQ_Priority_Config(uint8_t IRQ_Number, uint32_t IRQ_Priority);
 
 uint32_t SPI_Get_Flag_Status(SPI_RegDef_t *pSPIx, uint32_t flag);
 
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state);
+
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t state);
+
 
 #endif //MAIN_C_STM32F4XX_SPI_DRIVERS_H
