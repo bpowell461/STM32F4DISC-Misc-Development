@@ -159,6 +159,17 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t state)
         pSPIx->SPI_CR1 &= ~ (1 << SPI_CR1_SSI);
     }
 }
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t state)
+{
+    if(state == ENABLE)
+    {
+        pSPIx->SPI_CR2 |= (1 << SPI_CR2_SSOE);
+    }
+    else
+    {
+        pSPIx->SPI_CR2 &= ~ (1 << SPI_CR2_SSOE);
+    }
+}
 uint32_t SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t payload_length)
 {
 

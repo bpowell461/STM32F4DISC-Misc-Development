@@ -7,7 +7,7 @@
 
 void delay(void)
 {
-    //Busy Loop
+    //Busy Loop (200ms)
     int i;
     for (i = 0; i < 500000/2; i++);
 }
@@ -41,6 +41,9 @@ void SPI2_Init_GPIO_Pins(void)
 
 void SPI2_Init(void)
 {
+    //Configures GPIO pins for SPI
+    SPI2_Init_GPIO_Pins();
+
     SPI_Handle_t SPI2Handle;
     SPI2Handle.pSPIx = SPI2;
     SPI2Handle.SPIConfig.SPI_BusConfig      = SPI_BUS_CONFIG_FD;
@@ -53,26 +56,46 @@ void SPI2_Init(void)
 
     SPI_Init(&SPI2Handle);
 
-}
-
-int main(void)
-{
-
-    SPI2_Init_GPIO_Pins();
-
-    SPI2_Init();
-
     // Pulls SSI to high to avoid multi-master mode fault
     SPI_SSIConfig(SPI2, ENABLE);
+    SPI_SSOEConfig(SPI2, ENABLE);
 
     // Enables SPI Peripheral
     SPI_PeripheralControl(SPI2, ENABLE);
 
+}
+void Button_Init()
+{
+    GPIO_Handle_t GPIO_Button_Handle;
+
+    memset(&GPIO_Button_Handle, 0, sizeof(GPIO_Button_Handle));
+
+    // Button Init
+    GPIO_Button_Handle.pGPIOx = GPIOB;
+    GPIO_Button_Handle.GPIO_PinConfig.GPIO_PinNumber       = 8;
+    GPIO_Button_Handle.GPIO_PinConfig.GPIO_PinMode         = GPIO_MODE_IT_FT;
+    GPIO_Button_Handle.GPIO_PinConfig.GPIO_PinSpeed        = GPIO_SPEED_FAST;
+    GPIO_Button_Handle.GPIO_PinConfig.GPIO_PinPuPdControl  = GPIO_PIN_PU;
+
+    GPIO_Init(&GPIO_Button_Handle);
+}
+
+int main(void)
+{
+    SPI2_Init();
+    Button_Init();
+
     char dummy_payload[]    = "Hello World";
     uint8_t  payload_length = strlen(dummy_payload);
 
-    SPI_SendData(SPI2, (uint8_t *)payload_length, 1);
+    // Wait until button is pressed
+    while( !GPIO_ReadFromInputPin(GPIOB, 8));
+
+    SPI_SendData(SPI2, (uint8_t *)&payload_length, 1);
     SPI_SendData(SPI2, (uint8_t *)dummy_payload, strlen(dummy_payload));
+
+    //Only close SPI when BSY flag is cleared
+    while(SPI_Get_Flag_Status(SPI2, SPI_SR_BSY));
 
     SPI_PeripheralControl(SPI2, DISABLE);
 

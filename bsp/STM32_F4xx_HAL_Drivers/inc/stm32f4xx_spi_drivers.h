@@ -63,5 +63,7 @@ void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state);
 
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t state);
 
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t state);
+
 
 #endif //MAIN_C_STM32F4XX_SPI_DRIVERS_H
