@@ -137,6 +137,43 @@ uint32_t SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t payload_
     return SPI_Get_Flag_Status(pSPIx, SPI_SR_TXE);
 }
 
+uint32_t SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t payload_length)
+{
+    while(payload_length > 0)
+    {
+        // Wait for RX Not Empty Bit Set (Blocking)
+        while( !(SPI_Get_Flag_Status(pSPIx, SPI_SR_RXNE) ));
+
+        if (pSPIx->SPI_CR1 & (1 << SPI_CR1_DFF))
+        {
+            //16 Bit DFF
+            //Type-casting RX Buffer to 16 bit pointer then de-referencing to load value
+            *((uint16_t*)pRXBuffer) = pSPIx->SPI_DR;
+
+            //Decrementing payload
+            payload_length -= 2;
+
+            //Incrementing RX Buffer address (twice for 16 bits)
+            (uint16_t*)pRXBuffer++;
+            (uint16_t*)pRXBuffer++;
+        }
+        else
+        {
+            //8 Bit DFF
+            *(pRXBuffer) = pSPIx->SPI_DR;
+
+            //Decrementing payload
+            payload_length--;
+
+            //Incrementing RX Buffer address
+            pRXBuffer++;
+        }
+    }
+
+    // If RX Buffer has data then send was successful!
+    return SPI_Get_Flag_Status(pSPIx, SPI_SR_RXNE);
+}
+
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state)
 {
     if(state == ENABLE)
@@ -169,10 +206,6 @@ void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t state)
     {
         pSPIx->SPI_CR2 &= ~ (1 << SPI_CR2_SSOE);
     }
-}
-uint32_t SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t payload_length)
-{
-
 }
 
 void SPI_IRQ_Interrupt_Config(uint8_t IRQ_Number, uint8_t state)
