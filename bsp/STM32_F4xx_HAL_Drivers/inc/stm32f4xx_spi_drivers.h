@@ -21,6 +21,12 @@ typedef struct
 {
     SPI_RegDef_t    *pSPIx;
     SPI_Config_t    SPIConfig;
+    uint8_t         *pTXBuffer;
+    uint8_t         *pRXBuffer;
+    uint32_t        TX_Length;
+    uint32_t        RX_Length;
+    uint8_t         TX_State;
+    uint8_t         RX_State;
 }SPI_Handle_t;
 
 #define SPI_DEVICE_MODE_MASTER  1
@@ -45,6 +51,15 @@ typedef struct
 #define SPI_SSM_EN  1
 #define SPI_SSM_DIS  0
 
+#define SPI_READY       0
+#define SPI_BUSY_RX     1
+#define SPI_BUSY_TX     2
+
+#define SPI_EVENT_TX_COMPLETE   1
+#define SPI_EVENT_RX_COMPLETE   2
+#define SPI_EVENT_OVR_ERROR     3
+
+
 void SPI_PClKControl(SPI_RegDef_t *pSPIx, uint8_t state);
 
 uint32_t SPI_Init(SPI_Handle_t *pSPIHandle);
@@ -52,6 +67,9 @@ uint32_t SPI_DeInit(SPI_RegDef_t *pSPIx);
 
 uint32_t SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t payload_length);
 uint32_t SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t payload_length);
+
+uint32_t SPI_SendData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, uint32_t payload_length);
+uint32_t SPI_ReceiveData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffer, uint32_t payload_length);
 
 void SPI_IRQ_Interrupt_Config(uint8_t IRQ_Number, uint8_t state);
 void SPI_IRQHandling(SPI_Handle_t *pSPIHandle);
