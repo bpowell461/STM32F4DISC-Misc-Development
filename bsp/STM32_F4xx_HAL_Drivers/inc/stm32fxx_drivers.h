@@ -519,6 +519,6 @@ typedef struct
 uint32_t GPIO_BaseAddr_To_Code(GPIO_RegDef_t *pGPIOx_Handle);
 
 #include "stm324xx_gpio_driver.h"
-#include "stm32f4xx_spi_drivers.h"
+#include "stm32f4xx_spi_driver.h"
 
 #endif //STM32FXX_DRIVERS_H

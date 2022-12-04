@@ -3,8 +3,8 @@
 //
 #include "stm32fxx_drivers.h"
 #include <stdint.h>
-#ifndef MAIN_C_STM32F4XX_SPI_DRIVERS_H
-#define MAIN_C_STM32F4XX_SPI_DRIVERS_H
+#ifndef MAIN_C_STM32F4XX_SPI_DRIVER_H
+#define MAIN_C_STM32F4XX_SPI_DRIVER_H
 
 typedef struct
 {
@@ -59,17 +59,23 @@ typedef struct
 #define SPI_EVENT_RX_COMPLETE   2
 #define SPI_EVENT_OVR_ERROR     3
 
+#define SPI_TXE_FLAG    ( 1 << SPI_SR_TXE)
+#define SPI_RXNE_FLAG   ( 1 << SPI_SR_RXNE)
+#define SPI_BUSY_FLAG   ( 1 << SPI_SR_BSY)
+
 
 void SPI_PClKControl(SPI_RegDef_t *pSPIx, uint8_t state);
 
 uint32_t SPI_Init(SPI_Handle_t *pSPIHandle);
 uint32_t SPI_DeInit(SPI_RegDef_t *pSPIx);
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state);
 
 uint32_t SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t payload_length);
 uint32_t SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t payload_length);
 
 uint32_t SPI_SendData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, uint32_t payload_length);
 uint32_t SPI_ReceiveData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffer, uint32_t payload_length);
+void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t state);
 
 void SPI_IRQ_Interrupt_Config(uint8_t IRQ_Number, uint8_t state);
 void SPI_IRQHandling(SPI_Handle_t *pSPIHandle);
@@ -77,11 +83,8 @@ void SPI_IRQ_Priority_Config(uint8_t IRQ_Number, uint32_t IRQ_Priority);
 
 uint32_t SPI_Get_Flag_Status(SPI_RegDef_t *pSPIx, uint32_t flag);
 
-void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state);
-
 void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t state);
-
 void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t state);
 
 
-#endif //MAIN_C_STM32F4XX_SPI_DRIVERS_H
+#endif //MAIN_C_STM32F4XX_SPI_DRIVER_H

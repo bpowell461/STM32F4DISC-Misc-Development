@@ -1,12 +1,12 @@
 //
 // Created by Brad on 11/10/2022.
 //
-#include "../inc/stm32f4xx_spi_drivers.h"
+#include "../inc/stm32f4xx_spi_driver.h"
 
 static void spi_txe_interrupt_handle(SPI_Handle_t *pSPIHandle);
 static void spi_rxne_interrupt_handle(SPI_Handle_t *pSPIHandle);
-static void spi_ovr_interrupt_handle(SPI_Handle_t *pSPIHandle);
-static void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t state);
+static void spi_ovr_err_interrupt_handle(SPI_Handle_t *pSPIHandle);
+__attribute__((weak)) void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t state);
 
 
 uint32_t SPI_Get_Flag_Status(SPI_RegDef_t *pSPIx, uint32_t flag)
@@ -327,7 +327,7 @@ void SPI_IRQHandling(SPI_Handle_t *pSPIHandle)
     // Check and Handle Overrun Error
     if (Flag_Check1 && Flag_Check2)
     {
-        spi_ovr_interrupt_handle(pSPIHandle);
+        spi_ovr_err_interrupt_handle(pSPIHandle);
 
     }
 
@@ -437,12 +437,24 @@ static void spi_rxne_interrupt_handle(SPI_Handle_t *pSPIHandle)
     }
 }
 
-static void spi_ovr_interrupt_handle(SPI_Handle_t *pSPIHandle)
+static void spi_ovr_err_interrupt_handle(SPI_Handle_t *pSPIHandle)
 {
-    ;
+    uint8_t OVR_Clear_Read;
+    // Clearing OVR Flag
+    if(pSPIHandle->TX_State != SPI_BUSY_TX)
+    {
+        //OVR Bit is cleared by reading DR and SR registers
+        OVR_Clear_Read = pSPIHandle->pSPIx->SPI_DR;
+        OVR_Clear_Read = pSPIHandle->pSPIx->SPI_SR;
+    }
+
+    (void)OVR_Clear_Read;
+
+    // Callback to application
+    SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_OVR_ERROR);
 }
 
-static void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t state)
+__attribute__((weak)) void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle, uint8_t state)
 {
-    
+
 }

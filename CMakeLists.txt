@@ -32,9 +32,10 @@ include_directories(bsp/STM32_F4xx_HAL_Drivers/inc)
 set(SOURCES
         "src/SPI_Example/main.c"
         "bsp/STM32_F4xx_HAL_Drivers/startup/startup_stm32f407vgtx.s"
-        "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_gpio_drivers.c"
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_gpio_driver.c"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_drivers.c"
-        "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_spi_drivers.c")
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_spi_driver.c"
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_i2c_driver.c")
 
 set(LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/STM32F407VGTX_FLASH.ld)
 
