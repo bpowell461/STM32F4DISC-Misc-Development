@@ -66,8 +66,8 @@ typedef struct
 
 void SPI_PClKControl(SPI_RegDef_t *pSPIx, uint8_t state);
 
-uint32_t SPI_Init(SPI_Handle_t *pSPIHandle);
-uint32_t SPI_DeInit(SPI_RegDef_t *pSPIx);
+void SPI_Init(SPI_Handle_t *pSPIHandle);
+void SPI_DeInit(SPI_RegDef_t *pSPIx);
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state);
 
 uint32_t SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t payload_length);
