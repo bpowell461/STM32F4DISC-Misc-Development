@@ -187,7 +187,7 @@ static void I2C_Clear_Addr_Flag(I2C_Handle_t *pI2CHandle)
     }
 }
 
-uint32_t I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t payload_length, uint8_t Slave_Addr)
+uint32_t I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t payload_length, uint8_t Slave_Addr, uint8_t Repeated_Start)
 {
     // Generate Start Condition
     I2C_Generate_Start_Condition(pI2CHandle->pI2Cx);
@@ -221,7 +221,10 @@ uint32_t I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32
     while(!I2C_Get_Flag_Status(pI2CHandle->pI2Cx, I2C_SR1_BTF) );
 
     // Generate Stop Condition
-    I2C_Generate_Stop_Condition(pI2CHandle->pI2Cx);
+    if( Repeated_Start == I2C_DISABLE_SR)
+    {
+        I2C_Generate_Stop_Condition(pI2CHandle->pI2Cx);
+    }
 
     return 1;
 }
@@ -300,10 +303,67 @@ uint32_t I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uin
     {
         I2C_Control_ACK(pI2CHandle->pI2Cx,ENABLE);
     }
-    
+
     return 1;
 }
 
+uint8_t I2C_MasterSendData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t payload_length, uint8_t Slave_Addr, uint8_t Repeated_Start)
+{
+    uint8_t I2C_State = pI2CHandle->I2C_Peer.TX_RX_State;
+
+    if( (I2C_State != I2C_BUSY_IN_TX) && (I2C_State != I2C_BUSY_IN_RX))
+    {
+        pI2CHandle->I2C_Peer.pTXBuffer = pTXBuffer;
+        pI2CHandle->I2C_Peer.TX_Length = payload_length;
+        pI2CHandle->I2C_Peer.TX_RX_State = I2C_BUSY_IN_TX;
+        pI2CHandle->I2C_Peer.Device_Addr = Slave_Addr;
+        pI2CHandle->I2C_Peer.Repeated_Start = Repeated_Start;
+
+        // Generate START Condition
+        I2C_Generate_Start_Condition(pI2CHandle->pI2Cx);
+
+        // Enable ITBUFEN Control Bit
+        pI2CHandle->pI2Cx->I2C_CR2 |= ( 1 << I2C_CR2_ITBUFEN);
+
+        // Enable ITEVFEN Control Bit
+        pI2CHandle->pI2Cx->I2C_CR2 |= ( 1 << I2C_CR2_ITEVTEN);
+
+        // Enable ITERREN Control Bit
+        pI2CHandle->pI2Cx->I2C_CR2 |= ( 1 << I2C_CR2_ITERREN);
+
+    }
+
+    return I2C_State;
+}
+uint8_t I2C_MasterReceiveData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t payload_length, uint8_t Slave_Addr, uint8_t Repeated_Start)
+{
+    uint8_t I2C_State = pI2CHandle->I2C_Peer.TX_RX_State;
+
+    if( (I2C_State != I2C_BUSY_IN_TX) && (I2C_State != I2C_BUSY_IN_RX))
+    {
+        pI2CHandle->I2C_Peer.pRXBuffer = pRXBuffer;
+        pI2CHandle->I2C_Peer.RX_Length = payload_length;
+        pI2CHandle->I2C_Peer.RX_Size = payload_length;
+        pI2CHandle->I2C_Peer.TX_RX_State = I2C_BUSY_IN_RX;
+        pI2CHandle->I2C_Peer.Device_Addr = Slave_Addr;
+        pI2CHandle->I2C_Peer.Repeated_Start = Repeated_Start;
+
+        // Generate START Condition
+        I2C_Generate_Start_Condition(pI2CHandle->pI2Cx);
+
+        // Enable ITBUFEN Control Bit
+        pI2CHandle->pI2Cx->I2C_CR2 |= ( 1 << I2C_CR2_ITBUFEN);
+
+        // Enable ITEVFEN Control Bit
+        pI2CHandle->pI2Cx->I2C_CR2 |= ( 1 << I2C_CR2_ITEVTEN);
+
+        // Enable ITERREN Control Bit
+        pI2CHandle->pI2Cx->I2C_CR2 |= ( 1 << I2C_CR2_ITERREN);
+
+    }
+
+    return I2C_State;
+}
 static void I2C_Generate_Start_Condition(I2C_RegDef_t *pI2Cx)
 {
     pI2Cx->I2C_CR1 |= (1 << I2C_CR1_START);
@@ -313,13 +373,7 @@ static void I2C_Generate_Stop_Condition(I2C_RegDef_t *pI2Cx)
 {
     pI2Cx->I2C_CR1 |= (1 << I2C_CR1_STOP);
 }
-uint32_t I2C_ReceiveData(I2C_RegDef_t *pI2Cx, uint8_t *pRXBuffer, uint32_t payload_length)
-{
 
-}
-
-uint32_t I2C_SendData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t payload_length);
-uint32_t I2C_ReceiveData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t payload_length);
 void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t state);
 
 void I2C_IRQ_Interrupt_Config(uint8_t IRQ_Number, uint8_t state);

@@ -138,8 +138,7 @@ uint32_t SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t payload_
         }
     }
 
-    // If TX Buffer has data then send was successful!
-    return SPI_Get_Flag_Status(pSPIx, SPI_SR_TXE);
+    return 1;
 }
 
 uint32_t SPI_SendData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, uint32_t payload_length)

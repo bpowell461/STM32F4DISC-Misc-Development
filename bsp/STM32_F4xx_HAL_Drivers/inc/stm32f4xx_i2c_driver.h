@@ -101,11 +101,12 @@ void I2C_Init(I2C_Handle_t *pI2CHandle);
 void I2C_DeInit(I2C_RegDef_t *pI2Cx);
 void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t state);
 
-uint32_t I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t payload_length, uint8_t Slave_Addr);
+uint32_t I2C_MasterSendData(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t payload_length, uint8_t Slave_Addr, uint8_t Repeated_Start);
 uint32_t I2C_MasterReceiveData(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t payload_length, uint8_t Slave_Addr, uint8_t Repeated_Start);
 
-uint32_t I2C_SendData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t payload_length);
-uint32_t I2C_ReceiveData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t payload_length);
+uint8_t I2C_MasterSendData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pTXBuffer, uint32_t payload_length, uint8_t Slave_Addr, uint8_t Repeated_Start);
+uint8_t I2C_MasterReceiveData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pRXBuffer, uint32_t payload_length, uint8_t Slave_Addr, uint8_t Repeated_Start);
+
 void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t state);
 
 void I2C_IRQ_Interrupt_Config(uint8_t IRQ_Number, uint8_t state);

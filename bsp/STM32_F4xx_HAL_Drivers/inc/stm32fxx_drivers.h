@@ -54,8 +54,8 @@
 #define IRQ_NO_UART5	        53
 #define IRQ_NO_USART6	        71
 
-#define NVIC_IRQ_PRI0    0
-#define NVIC_IRQ_PRI15    15
+#define NVIC_IRQ_PRI0           0
+#define NVIC_IRQ_PRI15          15
 
 
 /* Memory Storage Addresses */

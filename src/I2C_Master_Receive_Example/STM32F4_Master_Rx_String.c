@@ -70,7 +70,9 @@ static void Button_Init()
 
 void main(void)
 {
-    char payload[] = "Hello Arduino! \n";
+    char receive_buffer[32];
+    uint8_t command;
+    uint8_t length;
 
     I2C1_Init_GPIO_Pins();
 
@@ -80,12 +82,22 @@ void main(void)
 
     I2C_PeripheralControl(I2C1Handle.pI2Cx, ENABLE);
 
+    I2C_Control_ACK(I2C1Handle.pI2Cx, ENABLE);
+
     while(1)
     {
         while(!GPIO_ReadFromInputPin(GPIOB, 8));
 
         delay();
 
-        I2C_MasterSendData(&I2C1Handle, (uint8_t *) &payload, strlen((char*)payload), I2C_Arduino_Address, I2C_DISABLE_SR);
+        // Length request/response to slave
+        command = 0x51;
+        I2C_MasterSendData(&I2C1Handle, (uint8_t *) &command, sizeof(uint8_t), I2C_Arduino_Address, I2C_ENABLE_SR);
+        I2C_MasterReceiveData(&I2C1Handle, &length, sizeof(uint8_t), I2C_Arduino_Address, I2C_ENABLE_SR);
+
+        // Data transmission request/response
+        command = 0x52;
+        I2C_MasterSendData(&I2C1Handle, (uint8_t *) &command, sizeof(uint8_t), I2C_Arduino_Address, I2C_ENABLE_SR );
+        I2C_MasterReceiveData(&I2C1Handle, (uint8_t *)receive_buffer, length, I2C_Arduino_Address, I2C_DISABLE_SR);
     }
 }
