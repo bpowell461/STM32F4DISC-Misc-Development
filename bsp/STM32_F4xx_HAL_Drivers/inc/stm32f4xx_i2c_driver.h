@@ -110,10 +110,14 @@ uint8_t I2C_MasterReceiveData_NonBlocking(I2C_Handle_t *pI2CHandle, uint8_t *pRX
 void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle, uint8_t state);
 
 void I2C_IRQ_Interrupt_Config(uint8_t IRQ_Number, uint8_t state);
-void I2C_IRQHandling(I2C_Handle_t *pI2CHandle);
+void I2C_EV_IRQHandling(I2C_Handle_t *pI2CHandle);
+void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle);
 void I2C_IRQ_Priority_Config(uint8_t IRQ_Number, uint32_t IRQ_Priority);
 
-uint32_t I2C_Get_Flag_Status(I2C_RegDef_t *pI2Cx, uint32_t flag);
+void I2C_Close_SendData(I2C_Handle_t *pI2CHandle);
+void I2C_Close_ReceiveData(I2C_Handle_t *pI2CHandle);
+
+uint32_t I2C_Get_Flag_Status(uint32_t I2C_Reg, uint32_t flag);
 void I2C_Control_ACK(I2C_RegDef_t *pI2Cx, uint8_t state);
 
 #endif //MAIN_C_STM32F4XX_I2C_DRIVER_H
