@@ -99,5 +99,7 @@ void main(void)
         command = 0x52;
         I2C_MasterSendData(&I2C1Handle, (uint8_t *) &command, sizeof(uint8_t), I2C_Arduino_Address, I2C_ENABLE_SR );
         I2C_MasterReceiveData(&I2C1Handle, (uint8_t *)receive_buffer, length, I2C_Arduino_Address, I2C_DISABLE_SR);
+
+        receive_buffer[length+1] = '\0';
     }
 }
