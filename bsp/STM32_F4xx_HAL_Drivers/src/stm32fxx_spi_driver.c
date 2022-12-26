@@ -1,7 +1,7 @@
 //
 // Created by Brad on 11/10/2022.
 //
-#include "../inc/stm32f4xx_spi_driver.h"
+#include "stm32f4xx_spi_driver.h"
 
 static void spi_txe_interrupt_handle(SPI_Handle_t *pSPIHandle);
 static void spi_rxne_interrupt_handle(SPI_Handle_t *pSPIHandle);
@@ -48,7 +48,7 @@ void SPI_PClKControl(SPI_RegDef_t *pSPIx, uint8_t state)
     }
 }
 
-uint32_t SPI_Init(SPI_Handle_t *pSPIHandle)
+void SPI_Init(SPI_Handle_t *pSPIHandle)
 {
     uint32_t tempReg = 0;
 
@@ -89,7 +89,7 @@ uint32_t SPI_Init(SPI_Handle_t *pSPIHandle)
 
 }
 
-uint32_t SPI_DeInit(SPI_RegDef_t *pSPIx)
+void SPI_DeInit(SPI_RegDef_t *pSPIx)
 {
     if (pSPIx == SPI1)
     {
@@ -138,20 +138,19 @@ uint32_t SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t payload_
         }
     }
 
-    // If TX Buffer has data then send was successful!
-    return SPI_Get_Flag_Status(pSPIx, SPI_SR_TXE);
+    return 1;
 }
 
 uint32_t SPI_SendData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, uint32_t payload_length)
 {
-    if(pSPIHandle->TX_State != SPI_BUSY_TX) {
+    if(pSPIHandle->SPI_Peer.TX_State != SPI_BUSY_TX) {
 
         // Save TX Buffer Address and Payload Length in Global Variables
-        pSPIHandle->pTXBuffer = pTXBuffer;
-        pSPIHandle->TX_Length = payload_length;
+        pSPIHandle->SPI_Peer.pTXBuffer = pTXBuffer;
+        pSPIHandle->SPI_Peer.TX_Length = payload_length;
 
         // Mark SPI State as 'Busy' for thread safety
-        pSPIHandle->TX_State = SPI_BUSY_TX;
+        pSPIHandle->SPI_Peer.TX_State = SPI_BUSY_TX;
 
         // Enable TXEIE Control Bit to get TXE Flag Interrupt from Status Register
         pSPIHandle->pSPIx->SPI_CR2 |= (1 << SPI_CR2_TXEIE);
@@ -159,7 +158,7 @@ uint32_t SPI_SendData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pTXBuffer, 
         // Handle Data Transmission in ISR
     }
 
-    return (pSPIHandle->TX_State);
+    return (pSPIHandle->SPI_Peer.TX_State);
 }
 
 uint32_t SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t payload_length)
@@ -200,14 +199,14 @@ uint32_t SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRXBuffer, uint32_t paylo
 
 uint32_t SPI_ReceiveData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffer, uint32_t payload_length)
 {
-    if (pSPIHandle->RX_State != SPI_BUSY_RX) {
+    if (pSPIHandle->SPI_Peer.RX_State != SPI_BUSY_RX) {
 
         // Save RX Buffer Address and Payload Length in Global Variables
-        pSPIHandle->pRXBuffer = pRXBuffer;
-        pSPIHandle->RX_Length = payload_length;
+        pSPIHandle->SPI_Peer.pRXBuffer = pRXBuffer;
+        pSPIHandle->SPI_Peer.RX_Length = payload_length;
 
         // Mark SPI State as 'Busy' for thread safety
-        pSPIHandle->RX_State = SPI_BUSY_TX;
+        pSPIHandle->SPI_Peer.RX_State = SPI_BUSY_TX;
 
         // Enable RXNEIE Control Bit to get TXE Flag Interrupt from Status Register
         pSPIHandle->pSPIx->SPI_CR2 |= (1 << SPI_CR2_RXNEIE);
@@ -215,7 +214,7 @@ uint32_t SPI_ReceiveData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffe
         // Handle Data Transmission in ISR
     }
 
-    return (pSPIHandle->RX_State);
+    return (pSPIHandle->SPI_Peer.RX_State);
 }
 
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state)
@@ -349,40 +348,40 @@ static void spi_txe_interrupt_handle(SPI_Handle_t *pSPIHandle)
     {
         //16 Bit DFF
         //Type-casting TX Buffer to 16 bit pointer then de-referencing to load value
-        pSPIHandle->pSPIx->SPI_DR = *((uint16_t*)pSPIHandle->pTXBuffer);
+        pSPIHandle->pSPIx->SPI_DR = *((uint16_t*)pSPIHandle->SPI_Peer.pTXBuffer);
 
         //Decrementing payload
-        pSPIHandle->TX_Length -= 2;
+        pSPIHandle->SPI_Peer.TX_Length -= 2;
 
         //Incrementing TX Buffer address
-        (uint16_t*)pSPIHandle->pTXBuffer++;
+        (uint16_t*)pSPIHandle->SPI_Peer.pTXBuffer++;
     }
     else
     {
         //8 Bit DFF
-        pSPIHandle->pSPIx->SPI_DR = *(pSPIHandle->pTXBuffer);
+        pSPIHandle->pSPIx->SPI_DR = *(pSPIHandle->SPI_Peer.pTXBuffer);
 
         //Decrementing payload
-        pSPIHandle->TX_Length--;
+        pSPIHandle->SPI_Peer.TX_Length--;
 
         //Incrementing TX Buffer address
-        pSPIHandle->pTXBuffer++;
+        pSPIHandle->SPI_Peer.pTXBuffer++;
     }
 
     // TX_Length is 0 then close SPI Communication
-    if(! pSPIHandle->TX_Length)
+    if(! pSPIHandle->SPI_Peer.TX_Length)
     {
         // Clear TXEIE Bit to prevent interrupt
         pSPIHandle->pSPIx->SPI_CR2 &= ~(1 << SPI_CR2_TXEIE);
 
         // Resetting TX Buffer to NULL
-        pSPIHandle->pTXBuffer = (void*)0;
+        pSPIHandle->SPI_Peer.pTXBuffer = (void*)0;
 
         // Resetting Length to 0
-        pSPIHandle->TX_Length = 0;
+        pSPIHandle->SPI_Peer.TX_Length = 0;
 
         // Set TX State to Ready
-        pSPIHandle->TX_State = SPI_READY;
+        pSPIHandle->SPI_Peer.TX_State = SPI_READY;
 
         // Call-back to application to inform Ready
         SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_TX_COMPLETE);
@@ -396,40 +395,40 @@ static void spi_rxne_interrupt_handle(SPI_Handle_t *pSPIHandle)
     {
         //16 Bit DFF
         //Type-casting RX Buffer to 16 bit pointer then de-referencing to load value
-        *((uint16_t*)pSPIHandle->pRXBuffer) = pSPIHandle->pSPIx->SPI_DR;
+        *((uint16_t*)pSPIHandle->SPI_Peer.pRXBuffer) = pSPIHandle->pSPIx->SPI_DR;
 
         //Decrementing payload
-        pSPIHandle->RX_Length -= 2;
+        pSPIHandle->SPI_Peer.RX_Length -= 2;
 
         //Incrementing RX Buffer address
-        (uint16_t*)pSPIHandle->pRXBuffer++;
+        (uint16_t*)pSPIHandle->SPI_Peer.pRXBuffer++;
     }
     else
     {
         //8 Bit DFF
-        *(pSPIHandle->pRXBuffer) = pSPIHandle->pSPIx->SPI_DR;
+        *(pSPIHandle->SPI_Peer.pRXBuffer) = pSPIHandle->pSPIx->SPI_DR;
 
         //Decrementing payload
-        pSPIHandle->RX_Length--;
+        pSPIHandle->SPI_Peer.RX_Length--;
 
         //Incrementing RX Buffer address
-        pSPIHandle->pRXBuffer++;
+        pSPIHandle->SPI_Peer.pRXBuffer++;
     }
 
     // RX_Length is 0 then close SPI Communication
-    if(! pSPIHandle->RX_Length)
+    if(! pSPIHandle->SPI_Peer.RX_Length)
     {
         // Clear RXNEIE Bit to prevent interrupt
         pSPIHandle->pSPIx->SPI_CR2 &= ~(1 << SPI_CR2_RXNEIE);
 
         // Resetting RX Buffer to NULL
-        pSPIHandle->pRXBuffer = (void*)0;
+        pSPIHandle->SPI_Peer.pRXBuffer = (void*)0;
 
         // Resetting Length to 0
-        pSPIHandle->RX_Length = 0;
+        pSPIHandle->SPI_Peer.RX_Length = 0;
 
         // Set RX State to Ready
-        pSPIHandle->RX_State = SPI_READY;
+        pSPIHandle->SPI_Peer.RX_State = SPI_READY;
 
         // Call-back to application to inform Ready
         SPI_ApplicationEventCallback(pSPIHandle, SPI_EVENT_RX_COMPLETE);
@@ -441,7 +440,7 @@ static void spi_ovr_err_interrupt_handle(SPI_Handle_t *pSPIHandle)
 {
     uint8_t OVR_Clear_Read;
     // Clearing OVR Flag
-    if(pSPIHandle->TX_State != SPI_BUSY_TX)
+    if(pSPIHandle->SPI_Peer.TX_State != SPI_BUSY_TX)
     {
         //OVR Bit is cleared by reading DR and SR registers
         OVR_Clear_Read = pSPIHandle->pSPIx->SPI_DR;

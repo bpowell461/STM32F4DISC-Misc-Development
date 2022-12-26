@@ -19,14 +19,18 @@ typedef struct
 
 typedef struct
 {
-    SPI_RegDef_t    *pSPIx;
-    SPI_Config_t    SPIConfig;
     uint8_t         *pTXBuffer;
     uint8_t         *pRXBuffer;
     uint32_t        TX_Length;
     uint32_t        RX_Length;
     uint8_t         TX_State;
     uint8_t         RX_State;
+}SPI_Peer_t;
+typedef struct
+{
+    SPI_RegDef_t    *pSPIx;
+    SPI_Config_t    SPIConfig;
+    SPI_Peer_t      SPI_Peer;
 }SPI_Handle_t;
 
 #define SPI_DEVICE_MODE_MASTER  1
@@ -66,8 +70,8 @@ typedef struct
 
 void SPI_PClKControl(SPI_RegDef_t *pSPIx, uint8_t state);
 
-uint32_t SPI_Init(SPI_Handle_t *pSPIHandle);
-uint32_t SPI_DeInit(SPI_RegDef_t *pSPIx);
+void SPI_Init(SPI_Handle_t *pSPIHandle);
+void SPI_DeInit(SPI_RegDef_t *pSPIx);
 void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t state);
 
 uint32_t SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTXBuffer, uint32_t payload_length);

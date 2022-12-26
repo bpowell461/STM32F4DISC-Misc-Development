@@ -30,18 +30,19 @@ add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-le
 
 include_directories(bsp/STM32_F4xx_HAL_Drivers/inc)
 set(SOURCES
-        "src/SPI_Example/main.c"
+        "src/I2C_Interrupts_Example/STM32F4_I2C_Interrupts.c"
         "bsp/STM32_F4xx_HAL_Drivers/startup/startup_stm32f407vgtx.s"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_gpio_driver.c"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_drivers.c"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_spi_driver.c"
-        "bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_i2c_driver.c")
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_i2c_driver.c" bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_rcc_driver.c)
 
 set(LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/STM32F407VGTX_FLASH.ld)
 
 add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)
 add_link_options(-mcpu=${MCPU} -mthumb -mthumb-interwork)
 add_link_options(-T ${LINKER_SCRIPT})
+add_link_options(-specs=nano.specs -specs=nosys.specs)
 
 add_executable(${PROJECT_NAME}.elf ${SOURCES})
 
