@@ -128,7 +128,7 @@ int main(void)
 
         while(I2C_MasterSendData_NonBlocking(&I2C1Handle,&commandcode,1,SLAVE_ADDR,I2C_ENABLE_SR) != I2C_READY);
 
-        while(I2C_MasterReceiveData_NonBlocking(&I2C1Handle,&len,1,SLAVE_ADDR,I2C_ENABLE_SR)!= I2C_READY);
+        while(I2C_MasterReceiveData_NonBlocking(&I2C1Handle,&len,1,SLAVE_ADDR,I2C_ENABLE_SR) != I2C_READY);
 
 
 
@@ -136,7 +136,7 @@ int main(void)
         while(I2C_MasterSendData_NonBlocking(&I2C1Handle,&commandcode,1,SLAVE_ADDR,I2C_ENABLE_SR) != I2C_READY);
 
 
-        while(I2C_MasterReceiveData_NonBlocking(&I2C1Handle,rcv_buf,len,SLAVE_ADDR,I2C_DISABLE_SR)!= I2C_READY);
+        while(I2C_MasterReceiveData_NonBlocking(&I2C1Handle,rcv_buf,len,SLAVE_ADDR,I2C_DISABLE_SR) != I2C_READY );
 
         rxComplt = RESET;
 
