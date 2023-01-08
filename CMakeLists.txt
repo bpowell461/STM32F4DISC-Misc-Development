@@ -35,7 +35,9 @@ set(SOURCES
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_gpio_driver.c"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_drivers.c"
         "bsp/STM32_F4xx_HAL_Drivers/src/stm32fxx_spi_driver.c"
-        "bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_i2c_driver.c" bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_rcc_driver.c)
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_i2c_driver.c"
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_rcc_driver.c"
+        "bsp/STM32_F4xx_HAL_Drivers/src/stm32f4xx_usart_driver.c")
 
 set(LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/STM32F407VGTX_FLASH.ld)
 

@@ -3,7 +3,7 @@
 //
 
 #include "../../bsp/STM32_F4xx_HAL_Drivers/inc/stm32fxx_drivers.h"
-#include "../../bsp/STM32_F4xx_HAL_Drivers/inc/stm324xx_gpio_driver.h"
+#include "../../bsp/STM32_F4xx_HAL_Drivers/inc/stm32f4xx_gpio_driver.h"
 #include <string.h>
 
 #define LOW     0

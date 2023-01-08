@@ -11,7 +11,14 @@ __attribute__((weak)) void SPI_ApplicationEventCallback(SPI_Handle_t *pSPIHandle
 
 uint32_t SPI_Get_Flag_Status(SPI_RegDef_t *pSPIx, uint32_t flag)
 {
-    return ((pSPIx->SPI_SR & (1 << flag)));
+    if (pSPIx->SPI_SR & (1 << flag))
+    {
+        return SET;
+    }
+    else
+    {
+        return RESET;
+    }
 }
 
 void SPI_PClKControl(SPI_RegDef_t *pSPIx, uint8_t state)
@@ -206,7 +213,7 @@ uint32_t SPI_ReceiveData_NonBlocking(SPI_Handle_t *pSPIHandle, uint8_t *pRXBuffe
         pSPIHandle->SPI_Peer.RX_Length = payload_length;
 
         // Mark SPI State as 'Busy' for thread safety
-        pSPIHandle->SPI_Peer.RX_State = SPI_BUSY_TX;
+        pSPIHandle->SPI_Peer.RX_State = SPI_BUSY_RX;
 
         // Enable RXNEIE Control Bit to get TXE Flag Interrupt from Status Register
         pSPIHandle->pSPIx->SPI_CR2 |= (1 << SPI_CR2_RXNEIE);
