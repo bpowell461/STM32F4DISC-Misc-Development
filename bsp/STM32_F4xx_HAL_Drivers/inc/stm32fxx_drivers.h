@@ -199,19 +199,19 @@
 /*
  * Clock Macros for USARTx peripherals
  */
-#define USART1_PCCK_EN()        (RCC->APB2ENR |= (1 << 4))
-#define USART2_PCCK_EN()        (RCC->APB1ENR |= (1 << 17))
-#define USART3_PCCK_EN()        (RCC->APB1ENR |= (1 << 18))
+#define USART1_PCLK_EN()        (RCC->APB2ENR |= (1 << 4))
+#define USART2_PCLK_EN()        (RCC->APB1ENR |= (1 << 17))
+#define USART3_PCLK_EN()        (RCC->APB1ENR |= (1 << 18))
 #define UART4_PCCK_EN()         (RCC->APB1ENR |= (1 << 19))
 #define UART5_PCCK_EN()         (RCC->APB1ENR |= (1 << 20))
-#define USART6_PCCK_EN()        (RCC->APB1ENR |= (1 << 5))
+#define USART6_PCLK_EN()        (RCC->APB1ENR |= (1 << 5))
 
-#define USART1_PCCK_DIS()       (RCC->APB2ENR &= ~(1 << 4))
-#define USART2_PCCK_DIS()       (RCC->APB1ENR &= ~(1 << 17))
-#define USART3_PCCK_DIS()       (RCC->APB1ENR &= ~(1 << 18))
+#define USART1_PCLK_DIS()       (RCC->APB2ENR &= ~(1 << 4))
+#define USART2_PCLK_DIS()       (RCC->APB1ENR &= ~(1 << 17))
+#define USART3_PCLK_DIS()       (RCC->APB1ENR &= ~(1 << 18))
 #define UART4_PCCK_DIS()        (RCC->APB1ENR &= ~(1 << 19))
 #define UART5_PCCK_DIS()        (RCC->APB1ENR &= ~(1 << 20))
-#define USART6_PCCK_DIS()       (RCC->APB1ENR &= ~(1 << 5))
+#define USART6_PCLK_DIS()       (RCC->APB1ENR &= ~(1 << 5))
 
 /*
  * Clock Macros for SYSCFG peripheral
@@ -428,6 +428,13 @@
 #define I2C2_REG_RESET      do{ (RCC->APB1RSTR |= (1 << 22)); (RCC->APB1RSTR &= ~(1 << 22)); }while(0)
 #define I2C3_REG_RESET      do{ (RCC->APB1RSTR |= (1 << 23)); (RCC->APB1RSTR &= ~(1 << 23)); }while(0)
 
+#define USART1_REG_RESET    do{ (RCC->APB2RSTR |= (1 << 4)); (RCC->APB2RSTR &= ~(1 << 4)); }while(0)
+#define USART2_REG_RESET    do{ (RCC->APB1RSTR |= (1 << 17)); (RCC->APB1RSTR &= ~(1 << 17)); }while(0)
+#define USART3_REG_RESET    do{ (RCC->APB1RSTR |= (1 << 18)); (RCC->APB1RSTR &= ~(1 << 18)); }while(0)
+#define UART4_REG_RESET     do{ (RCC->APB1RSTR |= (1 << 19)); (RCC->APB1RSTR &= ~(1 << 19)); }while(0)
+#define UART5_REG_RESET     do{ (RCC->APB1RSTR |= (1 << 20)); (RCC->APB1RSTR &= ~(1 << 20)); }while(0)
+#define USART6_REG_RESET    do{ (RCC->APB2RSTR |= (1 << 5)); (RCC->APB2RSTR &= ~(1 << 5)); }while(0)
+
 /*
  * Register Structs and Unions
  */
@@ -530,13 +537,24 @@ typedef struct
     volatile uint32_t I2C_FLTR;
 }I2C_RegDef_t;
 
+typedef struct
+{
+    volatile uint32_t USART_SR;
+    volatile uint32_t USART_DR;
+    volatile uint32_t USART_BRR;
+    volatile uint32_t USART_CR1;
+    volatile uint32_t USART_CR2;
+    volatile uint32_t USART_CR3;
+    volatile uint32_t USART_GTPR;
+}USART_RegDef_t;
+
 /*
  * Function
  */
 
 uint32_t GPIO_BaseAddr_To_Code(GPIO_RegDef_t *pGPIOx_Handle);
 
-#include "stm324xx_gpio_driver.h"
+#include "stm32f4xx_gpio_driver.h"
 #include "stm32f4xx_spi_driver.h"
 #include "stm32f4xx_i2c_driver.h"
 #endif //STM32FXX_DRIVERS_H

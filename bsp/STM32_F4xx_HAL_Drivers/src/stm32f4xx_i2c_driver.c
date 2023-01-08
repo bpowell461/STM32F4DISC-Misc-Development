@@ -127,7 +127,14 @@ void I2C_DeInit(I2C_RegDef_t *pI2Cx)
 }
 void I2C_PeripheralControl(I2C_RegDef_t *pI2Cx, uint8_t state)
 {
-
+    if(state == ENABLE)
+    {
+        pI2Cx->I2C_CR1 |= (1 << I2C_CR1_PE);
+    }
+    else
+    {
+        pI2Cx->I2C_CR1 &= ~(1 << 0);
+    }
 }
 
 static void I2C_Execute_Address_Phase_Write(I2C_RegDef_t *pI2Cx, uint8_t Slave_Addr)
@@ -601,7 +608,14 @@ void I2C_IRQ_Priority_Config(uint8_t IRQ_Number, uint32_t IRQ_Priority)
 }
 uint32_t I2C_Get_Flag_Status(uint32_t I2C_Reg, uint32_t flag)
 {
-    return ((I2C_Reg & (1 << flag)));
+    if (I2C_Reg & (1 << flag))
+    {
+        return SET;
+    }
+    else
+    {
+        return RESET;
+    }
 }
 void I2C_Master_Handle_RXNE_Interrupt(I2C_Handle_t *pI2CHandle)
 {

@@ -9,6 +9,7 @@
 uint32_t RCC_Get_PLL_Output_Clock(void);
 
 uint32_t RCC_Get_PCLK1_Value(void);
+uint32_t RCC_Get_PCLK2_Value(void);
 
 
 #endif //MAIN_C_STM32F4XX_RCC_DRIVER_H

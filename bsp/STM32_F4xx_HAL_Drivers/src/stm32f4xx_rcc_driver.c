@@ -60,3 +60,48 @@ uint32_t RCC_Get_PCLK1_Value(void)
 
     return pclk1;
 }
+uint32_t RCC_Get_PCLK2_Value(void)
+{
+    uint32_t pclk2,  SystemClock;
+    uint8_t clksrc, temp, ahb_prescale, apb2_prescale;
+
+    // Masking to get 2 bits
+    clksrc = (RCC->CFGR >> 2) & 0x3;
+
+    switch (clksrc) {
+        case 0:
+            SystemClock = 16000000;
+            break;
+        case 1:
+            SystemClock = 8000000;
+            break;
+    }
+
+    // Get AHB Prescale
+    temp = (RCC->CFGR >> 4) & 0xF;
+    if(temp < 8)
+    {
+        ahb_prescale = 1;
+    }
+    else
+    {
+        ahb_prescale = AHB_PreScaler[temp-8];
+    }
+
+    // Get APB Prescale
+
+    // Masking to get 3 bits
+    temp = (RCC->CFGR >> 13) & 0x7;
+    if(temp < 4)
+    {
+        apb2_prescale = 1;
+    }
+    else
+    {
+        apb2_prescale = APB1_PreScaler[temp-4];
+    }
+
+    pclk2 = (SystemClock / ahb_prescale) / apb2_prescale;
+
+    return pclk2;
+}

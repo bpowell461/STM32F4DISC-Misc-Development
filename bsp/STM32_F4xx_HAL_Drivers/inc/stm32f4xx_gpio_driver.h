@@ -2,8 +2,8 @@
 // Created by Brad on 10/16/2022.
 //
 
-#ifndef STM324XX_GPIO_DRIVER_H
-#define STM324XX_GPIO_DRIVER_H
+#ifndef STM32F4XX_GPIO_DRIVER_H
+#define STM32F4XX_GPIO_DRIVER_H
 
 #include "stm32fxx_drivers.h"
 
@@ -103,4 +103,4 @@ void GPIO_IRQHandling(uint8_t pin_number);
 void GPIO_IRQ_Priority_Config(uint8_t IRQ_Number, uint32_t IRQ_Priority);
 
 
-#endif //STM324XX_GPIO_DRIVER_H
+#endif //STM32F4XX_GPIO_DRIVER_H
